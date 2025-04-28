@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Shop - My Clothing Store{% endblock %}
+
+{% block content %}
+<div class="shop-content">
+    <h1>Our Collection</h1>
+    <p>Browse our unique designs on shirts and sweatshirts.</p>
+    <p>All our products are fulfilled and shipped by Printify. Click the link below to visit our shop hosted on Printify:</p>
+
+    <a href="{{ printify_url }}" target="_blank" rel="noopener noreferrer" class="button shop-button">
+        Visit Our Printify Store
+    </a>
+
+    <div class="product-previews">
+        <!-- Optional: Add some preview images or descriptions -->
+        <div class="preview-item">
+            <h2>Shirts</h2>
+            <p>Comfortable and stylish tees.</p>
+            <!-- <img src="/static/images/shirt_preview.jpg" alt="Shirt Preview"> -->
+        </div>
+        <div class="preview-item">
+            <h2>Sweatshirts</h2>
+            <p>Cozy sweatshirts for any occasion.</p>
+             <!-- <img src="/static/images/sweatshirt_preview.jpg" alt="Sweatshirt Preview"> -->
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,215 @@
+/* --- General Styles --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack elements vertically */
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+}
+
+main {
+    flex-grow: 1; /* Allow main content to grow and push footer down */
+    padding: 20px;
+    max-width: 1000px; /* Limit content width for readability */
+    margin: 20px auto; /* Center content area */
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- Navigation --- */
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline-block; /* Horizontal menu */
+    margin: 0 15px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover, nav a:focus {
+    color: #ddd;
+}
+
+
+/* --- Footer --- */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto; /* Pushes footer to the bottom */
+}
+
+/* --- Buttons --- */
+.button {
+    display: inline-block;
+    background-color: #5c67f2; /* Example color */
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.button:hover, .button:focus {
+    background-color: #4a54cc; /* Darker shade on hover */
+}
+
+/* --- Landing Page Specific --- */
+.landing-content {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.landing-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+    color: #333;
+}
+
+.landing-content p {
+    font-size: 1.1em;
+    margin-bottom: 1.5em;
+    color: #555;
+}
+
+/* --- Shop Page Specific --- */
+.shop-content {
+    text-align: center;
+    padding: 30px 15px;
+}
+
+.shop-content h1 {
+    margin-bottom: 1em;
+}
+
+.shop-button {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+}
+
+.product-previews {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    margin-top: 30px;
+    gap: 20px; /* Spacing between preview items */
+}
+
+.preview-item {
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    flex-basis: 45%; /* Aim for two items per row on larger screens */
+    min-width: 250px; /* Minimum width before wrapping */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.preview-item h2 {
+    margin-top: 0;
+    color: #5c67f2;
+}
+
+/* --- Fullscreen Message Styling --- */
+.fullscreen-message {
+    /* === Container Setup === */
+    width: 100vw;          /* Full viewport width */
+    min-height: 100vh;     /* Full viewport height (min-height allows content to grow if absolutely needed) */
+    display: flex;         /* Enable flexbox for centering */
+    justify-content: center; /* Center content horizontally */
+    align-items: center;   /* Center content vertically */
+    padding: 3vw;          /* Responsive padding (adjust % as needed) */
+    box-sizing: border-box;/* Include padding in width/height calculation */
+    overflow: hidden;      /* Hide any potential minor overflow */
+
+    /* === Text Styling === */
+    text-align: center;    /* Center text within the container */
+    color: #333;           /* Text color */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* Standard font */
+    font-weight: bold;     /* Make text bolder */
+    line-height: 1.1;      /* Adjust line spacing for large fonts */
+    word-wrap: break-word; /* Wrap long words if necessary */
+    overflow-wrap: break-word; /* Modern equivalent of word-wrap */
+
+    /* === Dynamic Font Size === */
+    /* clamp(MIN_SIZE, PREFERRED_SIZE, MAX_SIZE) */
+    /* PREFERRED uses viewport units: vw (width) and vh (height) */
+    /* min(X, Y) selects the smaller value - helps prevent overflow */
+    /* Adjust the numbers (e.g., 8vw, 15vh, 2rem, 25rem) to fine-tune */
+    font-size: clamp(
+        2rem, /* Minimum font size */
+        min(8vw, 15vh), /* Preferred size: scales with the smaller of viewport width or height */
+        25rem /* Maximum font size - prevents absurdly large text */
+    );
+
+    /* === Background (Optional) === */
+    background-color: #fff; /* Or any desired background */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    main {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    .landing-content h1 {
+        font-size: 2em;
+    }
+    .product-previews {
+        flex-direction: column; /* Stack previews vertically on small screens */
+        align-items: center;
+    }
+    .preview-item {
+       flex-basis: 80%; /* Take up more width when stacked */
+    }
+}
+
+@media (max-width: 480px) {
+    nav ul li {
+        display: block; /* Stack nav items vertically */
+        margin: 10px 0;
+    }
+    .landing-content h1 {
+        font-size: 1.8em;
+    }
+     .landing-content p {
+        font-size: 1em;
+    }
+     .button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}

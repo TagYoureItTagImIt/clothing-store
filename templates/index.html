@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{# --- Set the page title based on whether a message is being displayed --- #}
+{% block title %}
+    {% if message %}Message Display{% else %}Awesome Tees & Sweats - My Clothing Store{% endif %}
+{% endblock %}
+
+
+{# --- Conditionally load styles/fonts based on view --- #}
+{% block head_extra %}
+    {# --- Styles/Setup for Fullscreen Message View --- #}
+    {% if message %}
+    <style>
+        /* Base body resets */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden; /* Prevent body scrollbars when message fills screen */
+         }
+         /* Hide standard layout elements */
+        nav, footer {
+            display: none !important;
+        }
+        /* Reset main container styles */
+        main {
+             padding: 0 !important;
+             margin: 0 !important;
+             max-width: none !important;
+             background-color: transparent !important;
+             box-shadow: none !important;
+        }
+        /* Styles for the message container itself */
+        #fullscreen-message { /* Target by ID */
+            width: 100vw;
+            min-height: 100vh; /* Ensure it fills height */
+            max-height: 100vh; /* Prevent growing beyond viewport */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center;   /* Center vertically */
+            padding: 2vw 3vw;      /* Responsive padding */
+            box-sizing: border-box;/* Include padding in size */
+            overflow-y: auto;      /* Allow vertical scroll IF needed after JS resize */
+            overflow-x: hidden;    /* Prevent horizontal scroll */
+
+            text-align: center;    /* Center the text */
+            color: #333;           /* Text color */
+            background-color: #fff; /* White background for message */
+            /* Standard font stack */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-weight: bold;     /* Make text bold */
+            line-height: 1.0;      /* Tighten line height for large text */
+            word-wrap: break-word; /* Wrap long words */
+            overflow-wrap: break-word;
+            /* Fallback/Initial font size (JS will likely override) */
+            font-size: clamp(1rem, 5vw, 10rem);
+            white-space: normal;   /* Ensure text wraps */
+        }
+    </style>
+
+    {# --- Styles/Setup for Landing Page View --- #}
+    {% else %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    {% endif %}
+{% endblock %}
+
+
+{# --- Main Page Content --- #}
+{% block content %}
+
+    {# --- Display Fullscreen Message if 'msg' parameter exists --- #}
+    {% if message %}
+        <div id="fullscreen-message"> {# Use the ID for CSS and JS targeting #}
+            {{ message }}
+        </div>
+
+    {# --- Otherwise, display the Enhanced Landing Page --- #}
+    {% else %}
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content animate-on-load"> {# Added animation class #}
+                <h1 class="hero-title">Wear Your Vibe</h1>
+                <p class="hero-subtitle">Unique designs on premium shirts & sweatshirts.</p>
+                <a href="{{ url_for('shop') }}" class="button cta-button">Shop Now</a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section content-section animate-on-scroll"> {# Added animation class #}
+            <div class="container">
+                <h2>Quality You Can Feel</h2>
+                <p>We partner with Printify to bring you high-quality apparel featuring designs you won't find anywhere else. Comfort meets style, delivered right to your door.</p>
+            </div>
+        </section>
+
+        <!-- Featured Categories Section -->
+        <section class="featured-section content-section">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Explore Our Collections</h2> {# Added animation class #}
+                <div class="featured-items">
+                    <!-- Feature Card 1: Shirts -->
+                    <div class="feature-card animate-on-scroll"> {# Added animation class #}
+                        {# Remember to replace placeholder image #}
+                        <img src="https://via.placeholder.com/400x300/cccccc/888888?text=Cool+Shirt" alt="Featured Shirt" class="feature-image">
+                        <div class="feature-card-content">
+                            <h3>Awesome Shirts</h3>
+                            <p>From classic fits to modern trends.</p>
+                            <a href="{{ url_for('shop') }}" class="button feature-button">View Shirts</a>
+                        </div>
+                    </div>
+                    <!-- Feature Card 2: Sweatshirts -->
+                    <div class="feature-card animate-on-scroll"> {# Added animation class #}
+                         {# Remember to replace placeholder image #}
+                         <img src="https://via.placeholder.com/400x300/eeeeee/777777?text=Cozy+Sweatshirt" alt="Featured Sweatshirt" class="feature-image">
+                        <div class="feature-card-content">
+                            <h3>Cozy Sweatshirts</h3>
+                            <p>Stay warm in style.</p>
+                            <a href="{{ url_for('shop') }}" class="button feature-button">View Sweatshirts</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <!-- Simple CTA Section -->
+        <section class="cta-section content-section animate-on-scroll"> {# Added animation class #}
+             <div class="container">
+                <h2>Ready to Find Your New Favorite?</h2>
+                <a href="{{ url_for('shop') }}" class="button cta-button-alt">Visit the Full Shop</a>
+            </div>
+        </section>
+
+    {% endif %} {# End of the main if/else for message vs landing page #}
+{% endblock %}
+
+
+{# --- Conditionally load JavaScript --- #}
+{% block scripts %}
+
+    {# --- JS For Fullscreen Message Resizing --- #}
+    {% if message %}
+    <script>
+        function adjustFontSize() {
+            const messageElement = document.getElementById('fullscreen-message');
+            if (!messageElement) return;
+
+            const text = messageElement.textContent || messageElement.innerText;
+            if (!text.trim()) return;
+
+            const words = text.split(/\s+/);
+            let longestWord = '';
+            words.forEach(word => {
+                if (word.length > longestWord.length) {
+                    longestWord = word;
+                }
+            });
+
+            if (!longestWord) { // Handle case where text might exist but have no words (e.g., only spaces)
+                 // Optionally set a default size or just return
+                 messageElement.style.fontSize = 'clamp(1rem, 5vw, 10rem)'; // Use fallback
+                 return;
+            }
+
+            const container = messageElement;
+            const availableWidth = container.clientWidth;
+
+            const tempSpan = document.createElement('span');
+            tempSpan.style.visibility = 'hidden';
+            tempSpan.style.position = 'absolute';
+            tempSpan.style.whiteSpace = 'nowrap';
+            tempSpan.style.fontFamily = window.getComputedStyle(container).fontFamily;
+            tempSpan.style.fontWeight = window.getComputedStyle(container).fontWeight;
+            tempSpan.style.fontSize = '100px'; // Reference size
+            tempSpan.innerText = longestWord;
+
+            document.body.appendChild(tempSpan);
+            const wordWidthAt100px = tempSpan.offsetWidth;
+            document.body.removeChild(tempSpan);
+
+            if (wordWidthAt100px === 0) return;
+
+            const optimalFontSize = (availableWidth / wordWidthAt100px) * 100;
+            container.style.fontSize = optimalFontSize + 'px';
+
+             // Vertical Fit Check
+             let currentFontSize = optimalFontSize;
+             const minFontSize = 16; // 1rem approx
+             const maxIterations = 50;
+             let iterations = 0;
+
+             // Ensure styles are applied before checking height
+             requestAnimationFrame(() => {
+                 while (container.scrollHeight > container.clientHeight && currentFontSize > minFontSize && iterations < maxIterations) {
+                     currentFontSize *= 0.98;
+                     container.style.fontSize = currentFontSize + 'px';
+                     iterations++;
+                 }
+             });
+        }
+
+        // Debounce function
+        function debounce(func, wait, immediate) {
+            var timeout;
+            return function() {
+                var context = this, args = arguments;
+                var later = function() {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        };
+
+        // Run on initial load and resize
+        document.addEventListener('DOMContentLoaded', adjustFontSize);
+        window.addEventListener('resize', debounce(adjustFontSize, 150));
+    </script>
+
+    {# --- JS For Landing Page Animations --- #}
+    {% else %}
+    <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+    {% endif %} {# End of the conditional script loading #}
+{% endblock %}
