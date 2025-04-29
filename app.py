@@ -59,4 +59,4 @@ def shop():
 # --- Run Application ---
 if __name__ == '__main__':
     # Set debug=False for production
-    app.run(debug=True)
+    app.run(debug=False)
